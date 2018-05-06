@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { ActionButton, ListItem } from 'react-native-material-ui';
-import { Container, Header, Body, Title, Button, Icon } from 'native-base';
+import { ActionButton } from 'react-native-material-ui';
+import { Container, ListItem, Text, Right, Header, Body, Title, Button, Icon } from 'native-base';
 
 export default class InvoicesScreen extends React.Component {
   constructor(props) {
@@ -19,13 +19,15 @@ export default class InvoicesScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     const invoicesItems = this.state.invoices.map(invoice => (
-      <ListItem
-        key={invoice.id}
-        divider
-        centerElement={{
-          primaryText: invoice.id.toString(),
-        }}
-      />
+      <ListItem key={invoice.id}>
+        <Body>
+          <Text>{`Venta #${invoice.id}`}</Text>
+          <Text note>{`${invoice.invoice_lines_attributes.reduce((sum, item) => sum + item.quantity ,0)} productos`}</Text>
+        </Body>
+        <Right>
+          <Text>{`$${invoice.total}`}</Text>
+        </Right>
+      </ListItem>
     ));
 
     return (

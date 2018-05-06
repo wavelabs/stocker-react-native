@@ -15,7 +15,7 @@ export default class ScanBarCodeModal extends React.Component {
 
   render() {
     const { hasCameraPermission } = this.state;
-    const {onBarCodeRead, visible} = this.props;
+    const {onBarCodeRead, visible, onClose} = this.props;
 
     if (hasCameraPermission === null) {
       return <View />;
@@ -25,9 +25,7 @@ export default class ScanBarCodeModal extends React.Component {
       return (
         <Modal
           visible={visible}
-          onRequestClose={() => {
-                      console.log('modal closed');
-                    }}
+          onRequestClose={onClose}
           >
           <View style={{ flex: 1 }}>
             <Camera style={{ flex: 1 }} type={this.state.type}
