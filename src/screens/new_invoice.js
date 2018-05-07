@@ -1,24 +1,24 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Vibration } from 'react-native';
 import { ActionButton, Subheader } from 'react-native-material-ui';
-import { Container, Button, Icon, Text, Fab } from 'native-base';
+import { Container, Button, Icon, Text, Fab, Toast } from 'native-base';
 import InvoiceForm from '../components/InvoiceForm';
 import NewInvoiceHeader from '../components/NewInvoiceHeader'
 import NewInvoiceListLineItems from '../components/NewInvoiceListLineItems'
 import ScanBarCodeModal from '../components/ScanBarCodeModal'
 
-export default class NewInvoiceScreen extends React.Component {
+import { connect } from 'react-redux';
+import { addLineItem, removeLineItem, createInvoice } from '../actions/invoiceActions';
+import { fetchProducts } from '../actions/productActions';
+
+class NewInvoiceScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      invoice: {
-        total: 0,
-        invoice_lines_attributes: [],
-        created_at: Date.now()
-      },
       barCodeRead: '',
       isBarCodeRead: false,
-      isBulkInput: false
+      isBulkInput: false,
+      showToast: false
     };
     this.onSubmit               = this.onSubmit.bind(this);
     this.onLineItemFormSubmit   = this.onLineItemFormSubmit.bind(this);
@@ -28,52 +28,28 @@ export default class NewInvoiceScreen extends React.Component {
     this.closeBarCodeRead       = this.closeBarCodeRead.bind(this);
   }
 
-  findProductByBarcode(barcode, callback) {
-    fetch('http://192.168.1.2:3000/products?barcode=' + barcode)
-      .then(res => res.json())
-      .then(callback)
+  addLineItem(product, quantity) {
+    this.props.addLineItem(product, quantity);
   }
 
   onLineItemFormSubmit(barcode, quantity) {
-    this.findProductByBarcode(barcode, (data) => {
-      const {name, id, price} = data[0];
-      const subtotal = quantity * price;
-      const invoiceLineItem = {
-        quantity: quantity,
-        name: name,
-        product_id: id,
-        price: price,
-        subtotal: subtotal
-      };
+    const product = this.props.products.find( product => product.barcode == barcode);
+    if (product) {
+      return this.addLineItem(product, quantity)
+    };
 
-      const invoice = {
-        ...this.state.invoice,
-        total: this.state.invoice.total + subtotal,
-        invoice_lines_attributes: [...this.state.invoice.invoice_lines_attributes, invoiceLineItem]
-      }
-
-      this.setState({invoice: invoice, barCodeRead: ''});
-    })
+    this.props.fetchProducts(
+      {barcode: barcode},
+      products => this.addLineItem(products[0], quantity)
+    )
   }
 
   onSubmit() {
-    fetch('http://192.168.1.2:3000/invoices', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(this.state.invoice)
-    })
-    .then(res => res.json())
-    .then(data => console.log(data));
+    this.props.createInvoice(this.props.invoice);
   }
 
   onDeleteLineItem(newLineItems, deletedItems) {
-    const invoice = {
-      ...this.state.invoice,
-      total: this.state.invoice.total - deletedItems.reduce((sum, item) => (sum + item.subtotal), 0),
-      invoice_lines_attributes: newLineItems
-    };
-
-    this.setState({invoice: invoice});
+    this.props.removeLineItem(newLineItems, deletedItems);
   }
 
   openBarCodeScanner() {
@@ -86,12 +62,12 @@ export default class NewInvoiceScreen extends React.Component {
 
   onBarCodeRead(data) {
     this.onLineItemFormSubmit(data.data, 1);
-    this.setState({isBarCodeRead: false});
+    this.closeBarCodeRead();
   }
 
   render() {
     const navigation = this.props.navigation;
-    const {total, invoice_lines_attributes} = this.state.invoice;
+    const {total, invoice_lines_attributes} = this.props.invoice;
 
     return (
       <Container>
@@ -131,3 +107,16 @@ export default class NewInvoiceScreen extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  invoice:  state.invoices.item,
+  products: state.products.items
+});
+
+export default connect(
+  mapStateToProps, {
+    createInvoice,
+    addLineItem,
+    fetchProducts,
+    removeLineItem
+  })(NewInvoiceScreen);

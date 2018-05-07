@@ -2,7 +2,11 @@ import { View } from 'react-native';
 import React, { Component } from 'react';
 import { Font } from 'expo';
 
+import { Provider } from 'react-redux';
+
 import App from './src/App';
+
+import store from './src/store';
 
 export default class Root extends Component {
   constructor(props) {
@@ -25,7 +29,9 @@ export default class Root extends Component {
   render() {
     if (this.state.fontLoaded) {
       return (
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       )
     } else {
       return null
