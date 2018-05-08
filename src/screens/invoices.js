@@ -3,22 +3,17 @@ import { ScrollView } from 'react-native';
 import { ActionButton } from 'react-native-material-ui';
 import { Container, ListItem, Text, Right, Header, Body, Title, Button, Icon } from 'native-base';
 
-export default class InvoicesScreen extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      invoices: []
-    }
-  }
+import { connect } from 'react-redux';
+import { fetchInvoices } from '../actions/invoiceActions';
+
+class InvoicesScreen extends React.Component {
   componentWillMount() {
-    fetch('http://192.168.1.2:3000/invoices')
-      .then(res => res.json())
-      .then(data => this.setState({invoices: data}))
+    this.props.fetchInvoices();
   }
 
   render() {
     const { navigate } = this.props.navigation;
-    const invoicesItems = this.state.invoices.map(invoice => (
+    const invoicesItems = this.props.invoices.map(invoice => (
       <ListItem key={invoice.id}>
         <Body>
           <Text>{`Venta #${invoice.id}`}</Text>
@@ -47,3 +42,9 @@ export default class InvoicesScreen extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  invoices: state.invoices.items
+});
+
+export default connect(mapStateToProps, { fetchInvoices })(InvoicesScreen);

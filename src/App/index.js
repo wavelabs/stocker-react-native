@@ -4,7 +4,7 @@ import { NativeModules, StatusBar, View } from 'react-native';
 import { COLOR, ThemeProvider } from 'react-native-material-ui';
 import MainTabNavigator from '../routes';
 
-import { Container } from 'native-base';
+import { Root, Container } from 'native-base';
 
 const UIManager = NativeModules.UIManager;
 
@@ -41,13 +41,15 @@ class App extends Component {
     render() {
         return (
           <ThemeProvider uiTheme={uiTheme}>
-            <MainTabNavigator ref={(nav) => { this.navigator = nav; }} />
+            <Root>
+                <MainTabNavigator ref={(nav) => { this.navigator = nav; }} />
             {/* <Navigator
                 configureScene={App.configureScene}
                 initialRoute={routes.home}
                 ref={this.onNavigatorRef}
                 renderScene={App.renderScene}
             /> */}
+            </Root>
           </ThemeProvider>
         );
     }
