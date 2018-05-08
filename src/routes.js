@@ -1,13 +1,15 @@
 import { StackNavigator } from 'react-navigation';
 
-import AddProductScreen from './AddProductScreen';
+import NewProductScreen from './screens/new_product';
 import InvoicesScreen from './screens/invoices';
 import NewInvoiceScreen from './screens/new_invoice';
+import ProductsScreen from './screens/products';
 
 const AppNavigator = StackNavigator({
     Invoices:    { screen: InvoicesScreen },
+    Products:    { screen: ProductsScreen },
     NewInvoice:  { screen: NewInvoiceScreen },
-    AddProduct:  { screen: AddProductScreen }
+    NewProduct:  { screen: NewProductScreen }
 }, {
     headerMode: 'none',
 });
