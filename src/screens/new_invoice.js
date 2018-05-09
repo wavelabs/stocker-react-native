@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Vibration } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { ActionButton, Subheader } from 'react-native-material-ui';
 import { Container, Button, Icon, Text, Fab, Toast } from 'native-base';
 import InvoiceForm from '../components/InvoiceForm';
@@ -84,11 +85,11 @@ class NewInvoiceScreen extends React.Component {
           <View>
             <Subheader text={`Total: $${total}`} />
           </View>
-          <View>
+          <SafeAreaView style={{backgroundColor: '#5FB760'}}>
             <Button full success onPress={this.onSubmit}>
               <Text>Guardar</Text>
             </Button>
-          </View>
+          </SafeAreaView>
           <Fab
             active={false}
             direction="up"

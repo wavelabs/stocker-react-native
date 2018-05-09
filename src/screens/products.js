@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { ActionButton } from 'react-native-material-ui';
 import { Container, ListItem, Text, Right, Header, Body, Title, Button, Icon } from 'native-base';
+import StockerHeader from '../components/StockerHeader';
 
 import { connect } from 'react-redux';
 import { fetchProducts } from '../actions/productActions';
@@ -29,12 +30,12 @@ class ProductsScreen extends React.Component {
 
     return (
       <Container>
+        <StockerHeader
+          drawer
+          title={"Productos"}
+          navigation={this.props.navigation}
+        />
         <ScrollView>
-          <Header>
-            <Body>
-              <Title>Lista de Productos</Title>
-            </Body>
-          </Header>
           {this.productList()}
         </ScrollView>
         <ActionButton

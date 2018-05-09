@@ -1,7 +1,8 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { ActionButton } from 'react-native-material-ui';
-import { Container, ListItem, Text, Right, Header, Body, Title, Button, Icon } from 'native-base';
+import { Container, ListItem, Text, Right, Body } from 'native-base';
+import StockerHeader from '../components/StockerHeader';
 
 import { connect } from 'react-redux';
 import { fetchInvoices } from '../actions/invoiceActions';
@@ -27,12 +28,12 @@ class InvoicesScreen extends React.Component {
 
     return (
       <Container>
+        <StockerHeader
+          drawer
+          title={"Ventas"}
+          navigation={this.props.navigation}
+        />
         <ScrollView>
-          <Header>
-            <Body>
-              <Title>Lista de Ventas</Title>
-            </Body>
-          </Header>
           {invoicesItems}
         </ScrollView>
         <ActionButton

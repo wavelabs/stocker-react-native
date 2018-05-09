@@ -6,6 +6,7 @@ import ProductForm from '../components/ProductForm';
 import NewProductHeader from '../components/NewProductHeader'
 import NewInvoiceListLineItems from '../components/NewInvoiceListLineItems'
 import ScanBarCodeModal from '../components/ScanBarCodeModal'
+import StockerHeader from '../components/StockerHeader'
 
 import { connect } from 'react-redux';
 import { changeProductAttributes, createProduct } from '../actions/productActions';
@@ -46,7 +47,9 @@ class NewProductScreen extends React.Component {
 
     return (
       <Container>
-        <NewProductHeader
+        <StockerHeader
+          back
+          title={"Nuevo Producto"}
           navigation={navigation}/>
           <ProductForm
             product={this.props.product}
