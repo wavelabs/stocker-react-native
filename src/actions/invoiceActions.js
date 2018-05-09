@@ -6,8 +6,13 @@ import {
 } from './types';
 import { objectToUriQuery } from '../utils';
 
+import {
+  invoicesUrl,
+  createInvoiceUrl
+} from '../../config/api_routes'
+
 export const fetchInvoices = () => dispatch => {
-  fetch('http://192.168.1.2:3000/invoices')
+  fetch(invoicesUrl)
     .then(res => res.json())
     .then(invoices =>
       dispatch({
@@ -46,10 +51,10 @@ export const removeLineItem = (lineItems, deletedItems = []) => (dispatch, getSt
 }
 
 export const createInvoice = (invoiceData) => dispatch => {
-  fetch('http://192.168.1.2:3000/invoices', {
+  fetch(createInvoiceUrl, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(invoiceData)
+    body: JSON.stringify({invoice: invoiceData})
   })
   .then(res => res.json())
   .then(invoice =>
