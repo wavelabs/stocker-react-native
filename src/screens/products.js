@@ -17,6 +17,7 @@ class ProductsScreen extends React.Component {
       <ListItem key={product.id}>
         <Body>
           <Text>{product.name}</Text>
+          <Text note>{`${product.stock} u. en stock`}</Text>
         </Body>
         <Right>
           <Text>{`$${product.price}`}</Text>

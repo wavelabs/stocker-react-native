@@ -1,12 +1,17 @@
 import {
-  OPEN_DRAWER,
-  CLOSE_DRAWER
+  ADD_ERROR,
+  DISPLAY_SUCCESS,
+  CLEAN_FLASH
 } from './types';
 
-export const openDrawer = () => dispatch => {
-  dispatch({type: OPEN_DRAWER});
+export const addError = (text) => dispatch => {
+  dispatch({type: ADD_ERROR, payload: text});
 }
 
-export const closeDrawer = () => dispatch => {
-  dispatch({type: CLOSE_DRAWER});
+export const clearErrors = () => dispatch => {
+  dispatch({type: CLEAN_FLASH});
+}
+
+export const displaySuccess = (text) => dispatch => {
+  dispatch({type: DISPLAY_SUCCESS, payload: text});
 }

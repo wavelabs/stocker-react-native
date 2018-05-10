@@ -8,9 +8,10 @@ import NewInvoiceHeader from '../components/NewInvoiceHeader'
 import NewInvoiceListLineItems from '../components/NewInvoiceListLineItems'
 import ScanBarCodeModal from '../components/ScanBarCodeModal'
 
+import { ErrorFlash } from '../components/StockerFlash';
+
 import { connect } from 'react-redux';
 import { addLineItem, removeLineItem, createInvoice } from '../actions/invoiceActions';
-import { fetchProducts } from '../actions/productActions';
 
 class NewInvoiceScreen extends React.Component {
   constructor(props) {
@@ -29,24 +30,12 @@ class NewInvoiceScreen extends React.Component {
     this.closeBarCodeRead       = this.closeBarCodeRead.bind(this);
   }
 
-  addLineItem(product, quantity) {
-    this.props.addLineItem(product, quantity);
-  }
-
-  onLineItemFormSubmit(barcode, quantity) {
-    const product = this.props.products.find( product => product.barcode == barcode);
-    if (product) {
-      return this.addLineItem(product, quantity)
-    };
-
-    this.props.fetchProducts(
-      {barcode: barcode},
-      products => this.addLineItem(products[0], quantity)
-    )
-  }
-
   onSubmit() {
     this.props.createInvoice(this.props.invoice);
+  }
+
+  onLineItemFormSubmit() {
+
   }
 
   onDeleteLineItem(newLineItems, deletedItems) {
@@ -62,7 +51,7 @@ class NewInvoiceScreen extends React.Component {
   }
 
   onBarCodeRead(data) {
-    this.onLineItemFormSubmit(data.data, 1);
+    this.props.addLineItem(data.data, 1);
     this.closeBarCodeRead();
   }
 
@@ -104,6 +93,8 @@ class NewInvoiceScreen extends React.Component {
             onBarCodeRead={this.onBarCodeRead}
             onClose={this.closeBarCodeRead}
           />
+          { this.props.errors.length ? <ErrorFlash
+            errors={this.props.errors} /> : null }
       </Container>
     )
   }
@@ -111,13 +102,14 @@ class NewInvoiceScreen extends React.Component {
 
 const mapStateToProps = state => ({
   invoice:  state.invoices.item,
-  products: state.products.items
+  products: state.products.items,
+  errors:   state.screens.errors
 });
 
 export default connect(
   mapStateToProps, {
     createInvoice,
     addLineItem,
-    fetchProducts,
+    addLineItem,
     removeLineItem
   })(NewInvoiceScreen);

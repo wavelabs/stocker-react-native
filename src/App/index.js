@@ -4,9 +4,7 @@ import { NativeModules, StatusBar, View } from 'react-native';
 import { COLOR, ThemeProvider } from 'react-native-material-ui';
 import MainTabNavigator from '../routes';
 
-import { SafeAreaView } from 'react-navigation';
-
-import { Root, Container, Drawer } from 'native-base';
+import { Root } from 'native-base';
 
 const UIManager = NativeModules.UIManager;
 
@@ -22,10 +20,6 @@ class App extends Component {
       if (UIManager.setLayoutAnimationEnabledExperimental) {
         UIManager.setLayoutAnimationEnabledExperimental(true);
       }
-    }
-
-    closeDrawer() {
-      window.drawer._root.close()
     }
 
     render() {

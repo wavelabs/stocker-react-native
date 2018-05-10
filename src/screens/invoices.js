@@ -18,10 +18,9 @@ class InvoicesScreen extends React.Component {
       <ListItem key={invoice.id}>
         <Body>
           <Text>{`Venta #${invoice.id}`}</Text>
-          <Text note>{`${invoice.invoice_lines_attributes.reduce((sum, item) => sum + item.quantity ,0)} productos`}</Text>
         </Body>
         <Right>
-          <Text>{`$${invoice.total}`}</Text>
+          <Text>{`$${invoice.total_amount}`}</Text>
         </Right>
       </ListItem>
     ));

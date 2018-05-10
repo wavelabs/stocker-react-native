@@ -7,10 +7,14 @@ export const CREATE_INVOICE           = 'CREATE_INVOICE';
 
 /* PRODUCTS */
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
+export const FETCH_PRODUCT = 'FETCH_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
+export const PRODUCT_CREATED = 'PRODUCT_CREATED';
+export const UNABLE_CREATE_PRODUCT = 'UNABLE_CREATE_PRODUCT';
 export const NEW_PRODUCT    = 'NEW_PRODUCT';
 export const CHANGE_PRODUCT_ATTRIBUTES    = 'CHANGE_PRODUCT_ATTRIBUTES';
 
 /* SCREENS */
-export const OPEN_DRAWER    = 'OPEN_DRAWER';
-export const CLOSE_DRAWER   = 'CLOSE_DRAWER';
+export const ADD_ERROR       = 'ADD_ERROR';
+export const CLEAN_FLASH    = 'CLEAN_FLASH';
+export const DISPLAY_SUCCESS = 'DISPLAY_SUCCESS';

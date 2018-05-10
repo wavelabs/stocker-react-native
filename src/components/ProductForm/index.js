@@ -5,47 +5,60 @@ import { Text, Button, Container, Form, Item, Input, List, ListItem, Body, Right
 import ScanBarCodeModal from '../ScanBarCodeModal'
 
 class ProductForm extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   name: props.product.name,
-    //   barcode: props.product.barcode,
-    //   price: props.product.price
-    // }
-    //this.onChange      = this.onChange.bind(this);
-  }
-
   onChange(attributes) {
     this.props.changeProductAttributes(attributes)
   }
 
   render() {
-    const { name, price, barcode } = this.props.product
+    const { name, price, barcode, stock } = this.props.product
 
     return (
       <Container>
         <Form>
           <Item>
-            <Icon active name='md-barcode' />
+            <Icon
+              style={{textAlign:'center'}}
+              active
+              name='md-barcode'
+            />
             <Input
               placeholder="Código"
-              value={this.props.product.barcode}
+              value={barcode}
               onChangeText={text => this.props.onChange({barcode: text})}
               />
           </Item>
           <Item>
-            <Icon active name='logo-usd' />
+            <Icon
+              style={{textAlign:'center'}}
+              active
+              type='MaterialCommunityIcons'
+              name='currency-usd'
+            />
             <Input
               placeholder="Price"
               keyboardType='numeric'
-              value={this.props.product.price.toString()}
+              value={price ? price.toString() : ''}
               onChangeText={text => this.props.onChange({price: text})}
+              />
+          </Item>
+          <Item>
+            <Icon
+              style={{textAlign:'center'}}
+              active
+              name='package'
+              type='MaterialCommunityIcons'
+            />
+            <Input
+              placeholder="Stock"
+              keyboardType='numeric'
+              value={stock ? stock.toString() : ''}
+              onChangeText={text => this.props.onChange({stock: text})}
               />
           </Item>
           <Item>
             <Input
               placeholder="Nombre"
-              value={this.props.product.name}
+              value={name}
               onChangeText={text => this.props.onChange({name: text})}
             />
           </Item>
