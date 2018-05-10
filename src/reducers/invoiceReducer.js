@@ -32,12 +32,22 @@ export default function (state = initialState, action) {
         }
       }
     case ADD_INVOICE_LINE_ITEM:
+      const { name, id, price } = action.payload.product;
+      const subtotal = action.payload.quantity * price;
+      const invoiceLine = {
+        quantity: action.payload.quantity.toString(),
+        name: name,
+        product_id: id.toString(),
+        price: price.toString(),
+        subtotal: subtotal.toString()
+      };
+
       return {
         ...state,
         item: {
           ...state.item,
-          invoice_lines_attributes: [...state.item.invoice_lines_attributes, action.payload],
-          total: state.item.total + action.payload.subtotal
+          invoice_lines_attributes: [...state.item.invoice_lines_attributes, invoiceLine],
+          total: state.item.total + subtotal
         }
       }
     case REMOVE_INVOICE_LINE_ITEM:

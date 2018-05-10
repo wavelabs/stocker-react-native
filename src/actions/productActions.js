@@ -16,7 +16,7 @@ import {
   createProductUrl
 } from '../../config/api_routes'
 
-export const fetchProducts = (filters = {}, callback = null) => dispatch => {
+export const fetchProducts = (filters = {}) => dispatch => {
   fetch(`${productsUrl}?${objectToUriQuery(filters)}`)
     .then(res => res.json())
     .then(products => {
@@ -24,19 +24,17 @@ export const fetchProducts = (filters = {}, callback = null) => dispatch => {
         type: FETCH_PRODUCTS,
         payload: products
       })
-      if (callback) { callback(products) }
     });
 }
 
-export const fetchProductByBarcode = (barcode, callback = null) => dispatch => {
-  fetch(`${productsUrl}/${barcode}`)
+export const fetchProductByBarcode = (barcode) => dispatch => {
+  return fetch(`${productsUrl}/${barcode}`)
     .then(res => res.json())
     .then(product => {
       dispatch({
         type: FETCH_PRODUCT,
         payload: product
       });
-      if (callback) { callback(product) }
     })
 }
 

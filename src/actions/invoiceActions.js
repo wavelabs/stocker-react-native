@@ -17,6 +17,10 @@ import {
   productsUrl
 } from '../../config/api_routes'
 
+import {
+  fetchProductByBarcode
+} from './productActions';
+
 export const fetchInvoices = () => dispatch => {
   fetch(invoicesUrl)
     .then(res => res.json())
@@ -33,46 +37,19 @@ export const addLineItem = (barcode, quantity) => (dispatch, getState) => {
   const storedProduct = products.find( product => (product.barcode == barcode));
 
   if (storedProduct) {
-    const {name, id, price} = storedProduct;
-    const subtotal = quantity * price;
+    dispatch({type: FETCH_PRODUCT, payload: storedProduct});
     dispatch({
-        type: ADD_INVOICE_LINE_ITEM,
-        payload: {
-          quantity:   quantity.toString(),
-          name:       name,
-          product_id: id.toString(),
-          price:      price.toString(),
-          subtotal:   subtotal
-        }
-      });
+      type: ADD_INVOICE_LINE_ITEM,
+      payload: { quantity: quantity, product: storedProduct }
+    });
   } else {
-    fetch(`${productsUrl}/${barcode}`)
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(product => {
-        const {name, id, price} = product;
-        const subtotal = quantity * price;
-
-        dispatch({
-          type: FETCH_PRODUCT,
-          payload: product
-        });
-        dispatch({
-          type: ADD_INVOICE_LINE_ITEM,
-          payload: {
-            quantity:   quantity.toString(),
-            name:       name,
-            product_id: id.toString(),
-            price:      price.toString(),
-            subtotal:   subtotal
-          }
-        });
+    dispatch(fetchProductByBarcode(barcode))
+    .then(() => {
+      dispatch({
+        type: ADD_INVOICE_LINE_ITEM,
+        payload: { quantity, product: getState().products.item }
       })
-      .catch(error => {
-        dispatch({
-          type: ADD_ERROR,
-          payload: 'Producto no encontrado'
-        });
-      });
+    } );
   }
 }
 
