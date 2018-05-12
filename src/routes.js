@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import NewProductScreen from './screens/new_product';
 import InvoicesScreen from './screens/invoices';

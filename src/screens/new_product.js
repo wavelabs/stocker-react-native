@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Vibration } from 'react-native';
-import { ActionButton, Subheader } from 'react-native-material-ui';
-import { Container, Button, Icon, Text, Fab, Toast } from 'native-base';
+import { H3, Container, Button, Icon, Text, Fab, Toast } from 'native-base';
 import ProductForm from '../components/ProductForm';
 import NewProductHeader from '../components/NewProductHeader'
 import NewInvoiceListLineItems from '../components/NewInvoiceListLineItems'

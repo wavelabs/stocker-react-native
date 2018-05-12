@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { ActionButton } from 'react-native-material-ui';
-import { Container, ListItem, Text, Right, Body } from 'native-base';
+import { Icon, Fab, Container, ListItem, Text, Right, Body } from 'native-base';
 import StockerHeader from '../components/StockerHeader';
 
 import { connect } from 'react-redux';
@@ -35,9 +34,11 @@ class InvoicesScreen extends React.Component {
         <ScrollView>
           {invoicesItems}
         </ScrollView>
-        <ActionButton
+        <Fab
           onPress={() => {navigate('NewInvoice')}}
-      />
+        >
+          <Icon name="add" />
+        </Fab>
       </Container>
     )
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { ActionButton } from 'react-native-material-ui';
-import { Container, ListItem, Text, Right, Header, Body, Title, Button, Icon } from 'native-base';
+import { Fab, Container, ListItem, Text, Right, Header, Body, Title, Button, Icon } from 'native-base';
 import StockerHeader from '../components/StockerHeader';
 
 import { connect } from 'react-redux';
@@ -39,9 +39,11 @@ class ProductsScreen extends React.Component {
         <ScrollView>
           {this.productList()}
         </ScrollView>
-        <ActionButton
+        <Fab
           onPress={() => {navigate('NewProduct')}}
-      />
+        >
+          <Icon name="add" />
+        </Fab>
       </Container>
     )
   }

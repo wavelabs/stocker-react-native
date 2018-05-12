@@ -1,7 +1,9 @@
 import React from 'react';
 import { ListView, ScrollView, View } from 'react-native';
-import { Subheader } from 'react-native-material-ui';
-import { Container, List, ListItem, Body, Text, Right, Button, Icon } from 'native-base';
+import { H3, Container, List, ListItem, Body, Text, Right, Button, Icon } from 'native-base';
+
+import { connect } from 'react-redux';
+import { removeLineItem } from '../../actions/invoiceActions';
 
 class NewInvoiceListLineItems extends React.Component {
   constructor(props) {
@@ -13,7 +15,7 @@ class NewInvoiceListLineItems extends React.Component {
     rowMap[`${secId}${rowId}`].props.closeRow();
     const newData = [...this.props.items];
     const removedItems = newData.splice(rowId, 1);
-    this.props.onDelete(newData, removedItems);
+    this.props.removeLineItem(newData, removedItems);
   }
 
   render() {
@@ -22,7 +24,7 @@ class NewInvoiceListLineItems extends React.Component {
     return (
       <Container>
         <View>
-          <Subheader text="Items" />
+          <H3>Items</H3>
         </View>
         <ScrollView>
           <List
@@ -50,4 +52,8 @@ class NewInvoiceListLineItems extends React.Component {
   }
 }
 
-export default NewInvoiceListLineItems;
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, {
+  removeLineItem
+})(NewInvoiceListLineItems);

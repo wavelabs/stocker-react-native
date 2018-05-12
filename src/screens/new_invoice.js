@@ -1,59 +1,73 @@
 import React from 'react';
-import { View, Vibration } from 'react-native';
+import { View, Vibration, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { ActionButton, Subheader } from 'react-native-material-ui';
-import { Container, Button, Icon, Text, Fab, Toast } from 'native-base';
+import { Footer, FooterTab, H3, Container, Button, Icon, Text, Fab, Toast } from 'native-base';
 import InvoiceForm from '../components/InvoiceForm';
-import NewInvoiceHeader from '../components/NewInvoiceHeader'
+import StockerHeader from '../components/StockerHeader'
 import NewInvoiceListLineItems from '../components/NewInvoiceListLineItems'
 import ScanBarCodeModal from '../components/ScanBarCodeModal'
+import ProductSearchModal from '../components/ProductSearchModal'
 
 import { ErrorFlash } from '../components/StockerFlash';
 
 import { connect } from 'react-redux';
-import { addLineItem, removeLineItem, createInvoice } from '../actions/invoiceActions';
+import { addLineItem, createInvoice } from '../actions/invoiceActions';
 
 class NewInvoiceScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       barCodeRead: '',
-      isBarCodeRead: false,
-      isBulkInput: false,
-      showToast: false
+      showToast: false,
+      quantity: 1,
+      isReadingBarcode: false,
+      isSearchingProducts: false
     };
-    this.onSubmit               = this.onSubmit.bind(this);
-    this.onLineItemFormSubmit   = this.onLineItemFormSubmit.bind(this);
-    this.onDeleteLineItem       = this.onDeleteLineItem.bind(this);
-    this.openBarCodeScanner     = this.openBarCodeScanner.bind(this);
-    this.onBarCodeRead          = this.onBarCodeRead.bind(this);
-    this.closeBarCodeRead       = this.closeBarCodeRead.bind(this);
+    this.onSubmit                  = this.onSubmit.bind(this);
+    this.openBarCodeScanner        = this.openBarCodeScanner.bind(this);
+    this.openProductSearchModal    = this.openProductSearchModal.bind(this);
+    this.closeProductSearchModal   = this.closeProductSearchModal.bind(this);
+    this.onBarCodeRead             = this.onBarCodeRead.bind(this);
+    this.closeBarCodeRead          = this.closeBarCodeRead.bind(this);
+    this.onQuantityChange          = this.onQuantityChange.bind(this);
+    this.onProductSelected         = this.onProductSelected.bind(this);
   }
 
   onSubmit() {
-    this.props.createInvoice(this.props.invoice);
-  }
-
-  onLineItemFormSubmit() {
-
-  }
-
-  onDeleteLineItem(newLineItems, deletedItems) {
-    this.props.removeLineItem(newLineItems, deletedItems);
+    this.props.createInvoice(this.props.invoice)
   }
 
   openBarCodeScanner() {
-    this.setState({isBarCodeRead: true});
+    this.setState({isReadingBarcode: true});
+  }
+
+  openProductSearchModal() {
+    this.setState({isSearchingProducts: true});
+  }
+
+  closeProductSearchModal() {
+    this.setState({isSearchingProducts: false});
   }
 
   closeBarCodeRead() {
-    this.setState({isBarCodeRead: false});
+    this.setState({isReadingBarcode: false});
   }
 
   onBarCodeRead(data) {
-    this.props.addLineItem(data.data, 1);
+    this.props.addLineItem(data.data, this.state.quantity);
     this.closeBarCodeRead();
+    this.setState({quantity: 1});
   }
+
+  onQuantityChange(text) {
+    this.setState({quantity: text});
+  }
+
+  onProductSelected(product) {
+    this.props.addLineItem(product.barcode, this.state.quantity);
+    this.closeProductSearchModal();
+  }
+
 
   render() {
     const navigation = this.props.navigation;
@@ -61,44 +75,66 @@ class NewInvoiceScreen extends React.Component {
 
     return (
       <Container>
-        <NewInvoiceHeader
-          navigation={navigation}/>
-          { (this.state.isBulkInput) ?
-            <InvoiceForm
-              barCodeRead={this.state.barCodeRead}
-              onSubmit={this.onLineItemFormSubmit}/>
-            : null }
-          <NewInvoiceListLineItems
-            items={invoice_lines_attributes}
-            onDelete={this.onDeleteLineItem}/>
-          <View>
-            <Subheader text={`Total: $${total}`} />
-          </View>
-          <SafeAreaView style={{backgroundColor: '#5FB760'}}>
-            <Button full success onPress={this.onSubmit}>
+        <StockerHeader
+          back
+          navigation={navigation}
+          title={"Nueva Venta"}
+        />
+        <InvoiceForm
+          quantity={this.state.quantity}
+          onQuantityChange={this.onQuantityChange}
+          style={styles.invoiceForm}
+        />
+        <NewInvoiceListLineItems
+          items={invoice_lines_attributes}
+          onDelete={this.onDeleteLineItem}
+          styles={styles.invoiceLineItems}
+        />
+        <View styles={styles.subHeader}>
+          <H3>{`Total: $${total}`}</H3>
+        </View>
+        <Footer styles={styles.footer}>
+          <FooterTab>
+            <Button
+              onPress={this.openProductSearchModal}>
+              <Icon name="search"/>
+              <Text>Buscar</Text>
+            </Button>
+            <Button
+              active
+              onPress={this.onSubmit}
+            >
               <Text>Guardar</Text>
             </Button>
-          </SafeAreaView>
-          <Fab
-            active={false}
-            direction="up"
-            containerStyle={{ }}
-            style={{ backgroundColor: '#5067FF' }}
-            position="bottomRight"
-            onPress={this.openBarCodeScanner}>
-            <Icon name="camera" />
-          </Fab>
-          <ScanBarCodeModal
-            visible={this.state.isBarCodeRead}
-            onBarCodeRead={this.onBarCodeRead}
-            onClose={this.closeBarCodeRead}
-          />
-          { this.props.errors.length ? <ErrorFlash
-            errors={this.props.errors} /> : null }
+            <Button
+              onPress={() => this.setState({isReadingBarcode: true})}
+            >
+              <Icon name="barcode"/>
+              <Text>Escanear</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+        <ScanBarCodeModal
+          visible={this.state.isReadingBarcode}
+          onBarCodeRead={this.onBarCodeRead}
+          handlePressCancel={this.closeBarCodeRead}
+        />
+        <ProductSearchModal
+          visible={this.state.isSearchingProducts}
+          onButtonClosePress={this.closeProductSearchModal}
+          onProductSelected={this.onProductSelected}
+        />
       </Container>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  invoiceForm: { flex: 1 },
+  footer: { flex: 1 },
+  invoiceLineItems: { flex: 2 },
+  subHeader: { flex: 1 }
+});
 
 const mapStateToProps = state => ({
   invoice:  state.invoices.item,
@@ -109,7 +145,5 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps, {
     createInvoice,
-    addLineItem,
-    addLineItem,
-    removeLineItem
+    addLineItem
   })(NewInvoiceScreen);

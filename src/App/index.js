@@ -24,11 +24,10 @@ class App extends Component {
 
     render() {
       return (
-        <ThemeProvider uiTheme={uiTheme}>
-          <Root>
-            <MainTabNavigator ref={(nav) => { this.navigator = nav; }}/>
-          </Root>
-        </ThemeProvider>
+        <Root>
+          <StatusBar />
+          <MainTabNavigator ref={(nav) => { this.navigator = nav; }}/>
+        </Root>
       );
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import StockerHeader from '../StockerHeader';
 import { Header, Body, Title, Left, Right, Button, Icon } from 'native-base';
 
 class NewInvoiceHeader extends React.Component {
@@ -6,17 +7,22 @@ class NewInvoiceHeader extends React.Component {
     const navigation = this.props.navigation;
 
     return (
-      <Header>
-        <Left>
-          <Button transparent onPress={() => navigation.goBack()}>
-            <Icon name='arrow-back' />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Nueva Venta</Title>
-        </Body>
-        <Right />
-      </Header>
+      <StockerHeader
+        back
+        navigation={navigation}
+        title={"Nueva Venta"}
+        right={
+          <Right>
+            <Button
+              transparent
+              onPress={this.props.onBulkButtonPress}
+            >
+              <Icon
+                type="MaterialCommunityIcons"
+                name="upload-multiple" />
+            </Button>
+          </Right>
+        }/>
     )
   }
 }

@@ -66,8 +66,7 @@ export const removeLineItem = (lineItems, deletedItems = []) => (dispatch, getSt
 }
 
 export const createInvoice = (invoiceData) => dispatch => {
-  dispatch({type: CLEAN_FLASH});
-  fetch(createInvoiceUrl, {
+  return fetch(createInvoiceUrl, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({invoice: invoiceData})
@@ -75,19 +74,9 @@ export const createInvoice = (invoiceData) => dispatch => {
   .then(res => res.ok ? res.json() : Promise.reject())
   .then(invoice => {
     dispatch({
-      type: DISPLAY_SUCCESS,
-      payload: 'Venta guardada correctamente'
-    });
-    dispatch({
       type: CREATE_INVOICE,
       payload: invoice
     });
     dispatch({type: NEW_INVOICE});
   })
-  .catch(error => {
-    dispatch({
-      type: ADD_ERROR,
-      payload: 'No se pudo crear la Venta'
-    });
-  });
 }
