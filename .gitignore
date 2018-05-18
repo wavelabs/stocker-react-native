@@ -18,3 +18,5 @@ yarn-error.log*
 
 # fake server db
 /db
+
+.DS_Store
