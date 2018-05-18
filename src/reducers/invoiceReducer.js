@@ -1,5 +1,5 @@
 import {
-  FETCH_INVOICES,
+  SET_INVOICES,
   CREATE_INVOICE,
   NEW_INVOICE,
   ADD_INVOICE_LINE_ITEM,
@@ -17,7 +17,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch(action.type) {
-    case FETCH_INVOICES:
+    case SET_INVOICES:
       return {
         ...state,
         items: action.payload

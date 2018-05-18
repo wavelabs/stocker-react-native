@@ -1,13 +1,12 @@
 import {
-  FETCH_INVOICES,
   CREATE_INVOICE,
   ADD_INVOICE_LINE_ITEM,
   REMOVE_INVOICE_LINE_ITEM,
   CLEAN_FLASH,
   NEW_INVOICE,
-  DISPLAY_SUCCESS,
-  ADD_ERROR,
-  FETCH_PRODUCT
+  FETCH_PRODUCT,
+  API,
+  SET_INVOICES
 } from './types';
 import { objectToUriQuery } from '../utils';
 
@@ -22,14 +21,13 @@ import {
 } from './productActions';
 
 export const fetchInvoices = () => dispatch => {
-  fetch(invoicesUrl)
-    .then(res => res.json())
-    .then(invoices =>
-      dispatch({
-        type: FETCH_INVOICES,
-        payload: invoices
-      })
-    );
+  dispatch({
+    type: API,
+    url: "/api/v1/invoices.json",
+    payload: {
+      success: SET_INVOICES
+    }
+  });
 }
 
 export const addLineItem = (barcode, quantity) => (dispatch, getState) => {

@@ -17,7 +17,7 @@ class StockerHeader extends React.Component {
 
   title() {
     return (
-      <Body style={{flex: 4}}>
+      <Body>
         <Title>{this.props.title}</Title>
       </Body>
     )
@@ -44,7 +44,7 @@ class StockerHeader extends React.Component {
         { this.props.back ? this.back() : null }
         { this.props.title ? this.title() : null }
         { this.props.body ? this.props.body : null }
-        { this.props.right ? this.props.right : null }
+        { this.props.right ? this.props.right : <Right /> }
       </Header>
     )
   }
