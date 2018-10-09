@@ -12,8 +12,10 @@ class ProductsScreen extends React.Component {
     this.props.fetchProducts();
   }
 
-  productList() {
-    return this.props.products.map(product => (
+  renderProductList() {
+    const { products } = this.props;
+    
+    return products.map(product => (
       <ListItem key={product.id}>
         <Body>
           <Text>{product.name}</Text>
@@ -37,7 +39,7 @@ class ProductsScreen extends React.Component {
           navigation={this.props.navigation}
         />
         <ScrollView>
-          {this.productList()}
+          {this.renderProductList()}
         </ScrollView>
         <Fab
           onPress={() => {navigate('NewProduct')}}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NativeModules, StatusBar } from 'react-native';
+import { NativeModules } from 'react-native';
 
 import MainTabNavigator from '../routes';
 
@@ -17,7 +17,6 @@ class App extends Component {
     render() {
       return (
         <Root>
-          <StatusBar />
           <MainTabNavigator ref={(nav) => { this.navigator = nav; }}/>
         </Root>
       );

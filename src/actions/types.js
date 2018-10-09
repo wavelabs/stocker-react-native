@@ -25,6 +25,8 @@ export const API = 'API';
 export const API_START = 'API_START';
 export const API_DONE = 'API_DONE';
 export const API_ERROR = 'API_ERROR';
+export const SET_AUTH_TOKENS = 'SET_AUTH_TOKENS';
 
 /* CURRENT USER */
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const CLEAN_CURRENT_USER = 'CLEAN_CURRENT_USER';

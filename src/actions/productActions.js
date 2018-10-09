@@ -1,41 +1,31 @@
 import {
   FETCH_PRODUCTS,
-  CREATE_PRODUCT,
   PRODUCT_CREATED,
   NEW_PRODUCT,
   CHANGE_PRODUCT_ATTRIBUTES,
   ADD_ERROR,
   CLEAN_FLASH,
   DISPLAY_SUCCESS,
-  FETCH_PRODUCT
+  FETCH_PRODUCT,
+  API
 } from './types';
+
 import { objectToUriQuery } from '../utils';
 
-import {
-  productsUrl,
-  createProductUrl
-} from '../../config/api_routes'
-
 export const fetchProducts = (filters = {}) => dispatch => {
-  fetch(`${productsUrl}?${objectToUriQuery(filters)}`)
-    .then(res => res.json())
-    .then(products => {
-      dispatch({
-        type: FETCH_PRODUCTS,
-        payload: products
-      })
-    });
+  dispatch({
+    type: API,
+    url: `/api/v1/products?${objectToUriQuery(filters)}`,
+    success: FETCH_PRODUCTS
+  });
 }
 
 export const fetchProductByBarcode = (barcode) => dispatch => {
-  return fetch(`${productsUrl}/${barcode}`)
-    .then(res => res.json())
-    .then(product => {
-      dispatch({
-        type: FETCH_PRODUCT,
-        payload: product
-      });
-    })
+  dispatch({
+    type: API,
+    url: `/api/v1/products/${barcode}`,
+    success: FETCH_PRODUCT
+  })
 }
 
 export const changeProductAttributes = (attributes = {}) => dispatch => {
@@ -45,29 +35,12 @@ export const changeProductAttributes = (attributes = {}) => dispatch => {
   });
 }
 
-export const createProduct = (productData) => (dispatch, getState) => {
-  dispatch({type: CLEAN_FLASH});
-  fetch(createProductUrl, {
+export const createProduct = (productData) => dispatch => {
+  dispatch({
+    type: API,
+    url: '/api/v1/products',
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ product: productData })
-  })
-  .then(res => res.ok ? res.json() : Promise.reject())
-  .then(product => {
-    dispatch({
-      type: DISPLAY_SUCCESS,
-      payload: 'Producto guardado correctamente'
-    })
-    dispatch({
-      type: PRODUCT_CREATED,
-      payload: product
-    });
-    dispatch({type: NEW_PRODUCT});
-  })
-  .catch(error => {
-    dispatch({
-      type: ADD_ERROR,
-      payload: 'No se pudo crear el Producto'
-    });
+    body: JSON.stringify({ product: productData }),
+    success: PRODUCT_CREATED
   });
 }

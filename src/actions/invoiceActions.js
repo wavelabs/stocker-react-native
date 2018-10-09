@@ -2,19 +2,10 @@ import {
   CREATE_INVOICE,
   ADD_INVOICE_LINE_ITEM,
   REMOVE_INVOICE_LINE_ITEM,
-  CLEAN_FLASH,
-  NEW_INVOICE,
   FETCH_PRODUCT,
   API,
   SET_INVOICES
 } from './types';
-import { objectToUriQuery } from '../utils';
-
-import {
-  invoicesUrl,
-  createInvoiceUrl,
-  productsUrl
-} from '../../config/api_routes'
 
 import {
   fetchProductByBarcode
@@ -24,9 +15,7 @@ export const fetchInvoices = () => dispatch => {
   dispatch({
     type: API,
     url: "/api/v1/invoices.json",
-    payload: {
-      success: SET_INVOICES
-    }
+    success: SET_INVOICES
   });
 }
 
@@ -64,17 +53,11 @@ export const removeLineItem = (lineItems, deletedItems = []) => (dispatch, getSt
 }
 
 export const createInvoice = (invoiceData) => dispatch => {
-  return fetch(createInvoiceUrl, {
+  dispatch({
+    type: API,
+    url: "/api/v1/invoices.json",
+    success: CREATE_INVOICE,
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
     body: JSON.stringify({invoice: invoiceData})
-  })
-  .then(res => res.ok ? res.json() : Promise.reject())
-  .then(invoice => {
-    dispatch({
-      type: CREATE_INVOICE,
-      payload: invoice
-    });
-    dispatch({type: NEW_INVOICE});
-  })
+  });
 }

@@ -6,28 +6,37 @@ import InvoicesScreen from './screens/invoices';
 import NewInvoiceScreen from './screens/new_invoice';
 import ProductsScreen from './screens/products';
 
+import AuthScreen from './screens/Auth';
+
 import SideBar from './components/SideBar';
 
-const invoiceNavigator = StackNavigator({
+const InvoiceNavigator = StackNavigator({
   ListInvoices:   { screen: InvoicesScreen },
   NewInvoice:     { screen: NewInvoiceScreen }
 }, {
   headerMode: 'none'
 });
 
-const productNavigator = StackNavigator({
+const ProductNavigator = StackNavigator({
   ListProducts: { screen: ProductsScreen },
   NewProduct:   { screen: NewProductScreen }
 }, {
   headerMode: 'none'
 });
 
-const AppNavigator = DrawerNavigator({
-    Invoices:    { screen: invoiceNavigator },
-    Products:    { screen: productNavigator}
+const MainNavigator = DrawerNavigator({
+    Invoices:    { screen: InvoiceNavigator },
+    Products:    { screen: ProductNavigator}
 }, {
     headerMode: 'none',
     contentComponent: (props) => <SideBar {...props} />
 });
+
+const AppNavigator = StackNavigator({
+  Auth: { screen: AuthScreen },
+  Main: { screen: MainNavigator }
+}, {
+  headerMode: 'none'
+})
 
 export default AppNavigator;

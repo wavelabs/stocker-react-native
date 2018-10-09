@@ -7,8 +7,6 @@ import NewInvoiceListLineItems from '../components/NewInvoiceListLineItems'
 import ScanBarCodeModal from '../components/ScanBarCodeModal'
 import StockerHeader from '../components/StockerHeader'
 
-import { InfoFlash, ErrorFlash } from '../components/StockerFlash';
-
 import { connect } from 'react-redux';
 import { changeProductAttributes, createProduct } from '../actions/productActions';
 
@@ -42,6 +40,14 @@ class NewProductScreen extends React.Component {
     this.closeBarCodeRead();
   }
 
+  componentWillReceiveProps({errors}) {
+    if (errors) {
+      Toast.show({
+        text: errors
+      })
+    }
+  }
+
   render() {
     const navigation = this.props.navigation;
 
@@ -55,10 +61,6 @@ class NewProductScreen extends React.Component {
             product={this.props.product}
             onSubmit={this.onSubmit}
             onChange={this.props.changeProductAttributes}/>
-          { this.props.errors.length ? <ErrorFlash
-            errors={this.props.errors} /> : null }
-          { this.props.info ? <InfoFlash
-            info={this.props.info} /> : null }
           <Fab
             active={false}
             direction="up"
@@ -80,8 +82,7 @@ class NewProductScreen extends React.Component {
 
 const mapStateToProps = state => ({
   product:  state.products.item,
-  errors:   state.screens.errors,
-  info:     state.screens.info
+  errors:   state.ui.errors,
 });
 
 export default connect(

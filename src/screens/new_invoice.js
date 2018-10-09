@@ -8,8 +8,6 @@ import NewInvoiceListLineItems from '../components/NewInvoiceListLineItems'
 import ScanBarCodeModal from '../components/ScanBarCodeModal'
 import ProductSearchModal from '../components/ProductSearchModal'
 
-import { ErrorFlash } from '../components/StockerFlash';
-
 import { connect } from 'react-redux';
 import { addLineItem, createInvoice } from '../actions/invoiceActions';
 
@@ -139,7 +137,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   invoice:  state.invoices.item,
   products: state.products.items,
-  errors:   state.screens.errors
+  errors:   state.ui.errors
 });
 
 export default connect(

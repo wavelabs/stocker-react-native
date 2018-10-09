@@ -14,12 +14,14 @@ const uiReducer = (state = initialState, action) => {
     case API_START:
       return {
         ...state,
-        requests: state.requests + 1
+        requests: state.requests + 1,
+        errors: null
       }
     case API_DONE:
       return {
         ...state,
-        requests: state.requests - 1
+        requests: state.requests - 1,
+        errors: null
       }
     case API_ERROR:
       return {

@@ -3,7 +3,13 @@ import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { Container, Content, List, ListItem, Text, Icon, Left, Body, Right, Button } from 'native-base';
 
+import { connect } from 'react-redux';
+
+import { signOut } from "../../actions/currentUserActions";
+
 const SideBar = (props) => {
+  const { navigation, signOut } = props;
+
   return (
     <ScrollView>
       <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -11,7 +17,7 @@ const SideBar = (props) => {
           <ListItem
             icon
             button
-            onPress={() => props.navigation.navigate('Products')}
+            onPress={() => navigation.navigate('Products')}
           >
             <Left>
               <Icon name="md-list" />
@@ -23,7 +29,7 @@ const SideBar = (props) => {
           <ListItem
             icon
             button
-            onPress={() => props.navigation.navigate('Invoices')}
+            onPress={() => navigation.navigate('Invoices')}
           >
             <Left>
               <Icon name="md-book" />
@@ -32,10 +38,29 @@ const SideBar = (props) => {
               <Text>Ventas</Text>
             </Body>
           </ListItem>
+          <ListItem
+            icon
+            button
+            onPress={() => signOut()}
+          >
+            <Left>
+              <Icon name="exit" />
+            </Left>
+            <Body>
+              <Text>Salir</Text>
+            </Body>
+          </ListItem>
         </List>
       </SafeAreaView>
     </ScrollView>
   )
 }
 
-export default SideBar;
+const mapDispatchToProps = {
+  signOut
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SideBar);
