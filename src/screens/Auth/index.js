@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { View, Text, Container, Tabs, Tab, Header, Body } from 'native-base';
 

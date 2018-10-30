@@ -38,6 +38,7 @@
     "react-native-camera": "^1.1.2",
     "react-native-material-ui": "^1.22.3",
     "react-native-nav": "^2.0.2",
+    "react-native-tab-view": "github:react-navigation/react-native-tab-view",
     "react-navigation": "^1.5.11",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
